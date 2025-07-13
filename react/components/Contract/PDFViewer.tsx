@@ -52,8 +52,8 @@ const PDFViewer: React.FC<Props> = ({ file }) => {
     renderPDF()
   }, [file, zoom]) // 👈 Zoom thay đổi thì render lại
 
-  const handleZoomIn = () => setZoom((z) => Math.min(z + 0.25, 3))
-  const handleZoomOut = () => setZoom((z) => Math.max(z - 0.25, 0.5))
+  // const handleZoomIn = () => setZoom((z) => Math.min(z + 0.25, 3))
+  // const handleZoomOut = () => setZoom((z) => Math.max(z - 0.25, 0.5))
 
   if (pdfPages.length === 0) {
     return (
@@ -67,14 +67,14 @@ const PDFViewer: React.FC<Props> = ({ file }) => {
 return (
   <div className="relative flex flex-col h-full w-full">
     {/* Zoom Controls */}
-    <div className="sticky top-0 z-10 bg-white p-2 flex justify-end gap-3 shadow">
+    {/* <div className="sticky top-0 z-10 bg-white p-2 flex justify-end gap-3 shadow">
       <button onClick={handleZoomOut} className="p-2 rounded hover:bg-gray-100">
         <img src="assets/zoom-out.svg" alt="Zoom out" className="w-5 h-5" />
       </button>
       <button onClick={handleZoomIn} className="p-2 rounded hover:bg-gray-100">
         <img src="assets/zoom-in.svg" alt="Zoom in" className="w-5 h-5" />
       </button>
-    </div>
+    </div> */}
 
     {/* Render PDF pages */}
     <div className="flex-1 overflow-auto p-2 gap-4 flex flex-col">

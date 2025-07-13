@@ -7,15 +7,20 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js'
 
 interface Props {
   onFileProcessed: (text: string, file: File | null) => void
+  onProcessingStart?: () => void
+  onProgress?: (progress: number) => void
 }
 
-const ContractUpload: React.FC<Props> = ({ onFileProcessed }) => {
+const ContractUpload: React.FC<Props> = ({ onFileProcessed, onProcessingStart, onProgress }) => {
   const [loading, setLoading] = useState(false)
 
   // Convert PDF page to image
   async function* convertPDFToImages(file: File) {
     const pdf = await pdfjsLib.getDocument(URL.createObjectURL(file)).promise
     const numPages = pdf.numPages
+
+    // Báo cáo tiến trình 10% sau khi đọc được file PDF
+    if (onProgress) onProgress(10);
 
     for (let i = 1; i <= numPages; i++) {
       const page = await pdf.getPage(i)
@@ -28,6 +33,11 @@ const ContractUpload: React.FC<Props> = ({ onFileProcessed }) => {
       canvas.width = viewport.width
       await page.render({ canvasContext: context, viewport }).promise
       const imgData = canvas.toDataURL('image/png')
+      
+      // Update progress - phân bổ 10-40% cho việc render PDF
+      const progress = 10 + ((i / numPages) * 30);
+      if (onProgress) onProgress(progress);
+      
       yield { image: imgData, pageNum: i }
     }
   }
@@ -49,11 +59,22 @@ const ContractUpload: React.FC<Props> = ({ onFileProcessed }) => {
   async function processPDF(file: File) {
     const imageIterator = convertPDFToImages(file)
     let extractedText = ''
+    let pageCount = 0
+    const totalPages = await pdfjsLib.getDocument(URL.createObjectURL(file)).promise.then(pdf => pdf.numPages)
+    
     for await (const { image, pageNum } of imageIterator) {
+      pageCount++
       const text = await performOCR(image)
       extractedText += `--- Trang ${pageNum} ---\n${text}\n`
+      
+      // Update progress - phân bổ 40-95% cho việc OCR
+      const progress = 40 + ((pageCount / totalPages) * 55);
+      if (onProgress) onProgress(Math.min(95, progress));
     }
-    return extractedText
+
+    // Khi hoàn thành, đảm bảo tiến trình là 100%
+    if (onProgress) onProgress(100);
+    return extractedText;
   }
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,17 +82,30 @@ const ContractUpload: React.FC<Props> = ({ onFileProcessed }) => {
     if (!file) return
 
     setLoading(true)
+    if (onProcessingStart) onProcessingStart()
+    if (onProgress) onProgress(0)
+    
     try {
       if (file.type === 'application/pdf') {
         const text = await processPDF(file)
         onFileProcessed(text, file)
       } else if (file.type.startsWith('image/')) {
+        if (onProgress) onProgress(10)
         const buffer = await file.arrayBuffer()
+        if (onProgress) onProgress(30)
         const blob = new Blob([buffer], { type: file.type })
         const imageUrl = URL.createObjectURL(blob)
+        if (onProgress) onProgress(50)
         const { data } = await Tesseract.recognize(imageUrl, 'vie', {
-          logger: (m) => console.log(m)
+          logger: (m) => {
+            console.log(m)
+            if (m.status === 'recognizing text' && onProgress) {
+              // Phân bổ 50-95% cho việc OCR ảnh
+              onProgress(50 + (m.progress * 45))
+            }
+          }
         })
+        if (onProgress) onProgress(100)
         onFileProcessed(data.text, file)
         URL.revokeObjectURL(imageUrl)
       } else {
