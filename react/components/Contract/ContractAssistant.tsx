@@ -16,32 +16,37 @@ interface WarningItemProps {
 
 // Interface cho tab điều hướng
 interface NavTab {
-  id: string;
-  label: string;
-  icon: React.ReactNode;
+  id: string
+  label: string
+  icon: React.ReactNode
 }
 
 // Interface cho tài liệu đã tải lên
 interface UploadedDocument {
-  id: string;
-  name: string;
-  date: string;
-  size: string;
+  id: string
+  name: string
+  date: string
+  size: string
 }
 
 const WarningItem: React.FC<WarningItemProps> = ({ warning }) => {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(false)
 
   return (
     <div className='mb-4 border border-gray-200 rounded-lg overflow-hidden shadow-sm'>
-      <div 
+      <div
         className='flex items-start justify-between p-4 cursor-pointer bg-white hover:bg-gray-50'
         onClick={() => setExpanded(!expanded)}
       >
         <div className='flex items-start gap-3'>
           <div className='mt-0.5'>
-            <svg className="h-5 w-5 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            <svg className='h-5 w-5 text-orange-500' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                strokeWidth={2}
+                d='M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z'
+              />
             </svg>
           </div>
           <div>
@@ -51,24 +56,29 @@ const WarningItem: React.FC<WarningItemProps> = ({ warning }) => {
         </div>
         <div className='text-gray-400'>
           {expanded ? (
-            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+            <svg className='h-5 w-5' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+              <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M5 15l7-7 7 7' />
             </svg>
           ) : (
-            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            <svg className='h-5 w-5' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+              <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 9l-7 7-7-7' />
             </svg>
           )}
         </div>
       </div>
-      
+
       {expanded && (
         <div className='p-4 border-t border-gray-200 bg-gray-50'>
           <div className='mb-2 text-sm font-medium text-gray-700'>Đề xuất</div>
           <div className='p-3 bg-white rounded border border-gray-200 text-sm'>
             <div className='flex items-start gap-2'>
-              <svg className="h-4 w-4 text-indigo-500 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+              <svg className='h-4 w-4 text-indigo-500 mt-0.5' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth={2}
+                  d='M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z'
+                />
               </svg>
               <div>
                 <p className='text-gray-700'>
@@ -89,38 +99,45 @@ const WarningItem: React.FC<WarningItemProps> = ({ warning }) => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
 // Component hiển thị tài liệu đã tải lên
-const DocumentItem: React.FC<{ document: UploadedDocument; isActive: boolean; onClick: () => void }> = ({ 
-  document, 
+const DocumentItem: React.FC<{ document: UploadedDocument; isActive: boolean; onClick: () => void }> = ({
+  document,
   isActive,
   onClick
 }) => {
   return (
-    <div 
-      className={`p-3 border-b cursor-pointer transition-colors duration-200 ${isActive ? 'bg-blue-50 border-l-4 border-l-blue-500' : 'hover:bg-gray-50'}`}
+    <div
+      className={`p-3 border-b cursor-pointer transition-colors duration-200 ${
+        isActive ? 'bg-blue-50 border-l-4 border-l-blue-500' : 'hover:bg-gray-50'
+      }`}
       onClick={onClick}
     >
-      <div className="flex items-center gap-3">
-        <div className="p-2 bg-blue-100 rounded-lg">
-          <svg className="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+      <div className='flex items-center gap-3'>
+        <div className='p-2 bg-blue-100 rounded-lg'>
+          <svg className='h-5 w-5 text-blue-600' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+            <path
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              strokeWidth={2}
+              d='M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'
+            />
           </svg>
         </div>
-        <div className="flex-1 min-w-0">
-          <p className="text-sm font-medium text-gray-800 truncate">{document.name}</p>
-          <div className="flex items-center text-xs text-gray-500 mt-1">
+        <div className='flex-1 min-w-0'>
+          <p className='text-sm font-medium text-gray-800 truncate'>{document.name}</p>
+          <div className='flex items-center text-xs text-gray-500 mt-1'>
             <span>{document.date}</span>
-            <span className="mx-1">•</span>
+            <span className='mx-1'>•</span>
             <span>{document.size}</span>
           </div>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 const ContractAssistant: React.FC<Props> = ({ isOpen, onClose }) => {
   const dispatch = useDispatch()
@@ -135,10 +152,10 @@ const ContractAssistant: React.FC<Props> = ({ isOpen, onClose }) => {
   const [showExtractedText, setShowExtractedText] = useState(false)
   const [extractedTextTemp, setExtractedTextTemp] = useState('')
   const [textOpacity, setTextOpacity] = useState(0)
-  
+
   // State cho tab điều hướng
   const [activeTab, setActiveTab] = useState<string>('content')
-  
+
   // State cho tài liệu đã tải lên
   const [uploadedDocuments, setUploadedDocuments] = useState<UploadedDocument[]>([])
   const [activeDocument, setActiveDocument] = useState<string | null>(null)
@@ -149,8 +166,13 @@ const ContractAssistant: React.FC<Props> = ({ isOpen, onClose }) => {
       id: 'content',
       label: 'Nội dung',
       icon: (
-        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        <svg className='h-5 w-5' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+          <path
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            strokeWidth={2}
+            d='M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'
+          />
         </svg>
       )
     },
@@ -158,8 +180,13 @@ const ContractAssistant: React.FC<Props> = ({ isOpen, onClose }) => {
       id: 'documents',
       label: 'Tài liệu đã tải lên',
       icon: (
-        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+        <svg className='h-5 w-5' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+          <path
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            strokeWidth={2}
+            d='M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4'
+          />
         </svg>
       )
     }
@@ -169,42 +196,42 @@ const ContractAssistant: React.FC<Props> = ({ isOpen, onClose }) => {
   useEffect(() => {
     if (scanProgress >= 100 && loading) {
       // Khi tiến trình quét đạt 100%, kết thúc quá trình tải và bắt đầu quét dọc
-      setLoading(false);
-      setShowVerticalScan(true);
+      setLoading(false)
+      setShowVerticalScan(true)
     }
-  }, [scanProgress, loading]);
+  }, [scanProgress, loading])
 
   useEffect(() => {
     if (showVerticalScan) {
       // Animate vertical scan bar - tăng tốc độ quét
-      let progress = 0;
+      let progress = 0
       const interval = setInterval(() => {
-        progress += 2; // Tăng tốc độ quét
-        setVerticalScanProgress(progress);
-        
+        progress += 2 // Tăng tốc độ quét
+        setVerticalScanProgress(progress)
+
         if (progress >= 100) {
-          clearInterval(interval);
+          clearInterval(interval)
           setTimeout(() => {
-            setShowVerticalScan(false);
-            setShowExtractedText(true);
-          }, 200); // Giảm thời gian chờ
+            setShowVerticalScan(false)
+            setShowExtractedText(true)
+          }, 200) // Giảm thời gian chờ
         }
-      }, 20); // Giảm thời gian giữa các bước
-      
-      return () => clearInterval(interval);
+      }, 20) // Giảm thời gian giữa các bước
+
+      return () => clearInterval(interval)
     }
-  }, [showVerticalScan]);
+  }, [showVerticalScan])
 
   // Fade in effect for text - tăng tốc độ hiển thị
   useEffect(() => {
     if (showExtractedText) {
-      setTextOpacity(0);
+      setTextOpacity(0)
       setTimeout(() => {
-        setExtractedText(extractedTextTemp);
-        setTextOpacity(100);
-      }, 50); // Giảm thời gian chờ
+        setExtractedText(extractedTextTemp)
+        setTextOpacity(100)
+      }, 50) // Giảm thời gian chờ
     }
-  }, [showExtractedText, extractedTextTemp]);
+  }, [showExtractedText, extractedTextTemp])
 
   // Cập nhật danh sách tài liệu khi có file mới được tải lên
   useEffect(() => {
@@ -214,18 +241,18 @@ const ContractAssistant: React.FC<Props> = ({ isOpen, onClose }) => {
         name: uploadedFile.name,
         date: new Date().toLocaleDateString('vi-VN'),
         size: `${Math.round(uploadedFile.size / 1024)} KB`
-      };
-      
-      setUploadedDocuments(prev => [newDocument, ...prev]);
-      setActiveDocument(newDocument.id);
+      }
+
+      setUploadedDocuments((prev) => [newDocument, ...prev])
+      setActiveDocument(newDocument.id)
     }
-  }, [uploadedFile]);
+  }, [uploadedFile])
 
   if (!isOpen) return null
 
   const handleFileProcessed = async (text: string, file: File | null) => {
     // Store the text temporarily but don't display it yet
-    setExtractedTextTemp(text);
+    setExtractedTextTemp(text)
     setUploadedFile(file)
     dispatch(setExtractedTextRedux(text))
     console.log('📝 OCR Text:', text)
@@ -238,8 +265,7 @@ const ContractAssistant: React.FC<Props> = ({ isOpen, onClose }) => {
           message: text,
           sessionId: 'contract-analysis'
         })
-      }
-    )
+      })
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
 
@@ -267,27 +293,25 @@ const ContractAssistant: React.FC<Props> = ({ isOpen, onClose }) => {
         console.warn('⚠️ Phản hồi không có "suggestions" hợp lệ:', parsed)
         // Nếu không có dữ liệu hợp lệ từ API, sử dụng dữ liệu mẫu để demo
         setWarnings([
-          "Flag all dates",
-          "If governing law is present in the agreement, set it to Commonwealth of Massachusetts",
-          "Check for confidentiality clauses",
-          "Verify payment terms and conditions"
-        ]);
+          'Flag all dates',
+          'If governing law is present in the agreement, set it to Commonwealth of Massachusetts',
+          'Check for confidentiality clauses',
+          'Verify payment terms and conditions'
+        ])
       }
       console.log(scanProgress)
-      
 
-      
       console.log(scanProgress)
     } catch (err) {
       console.error('❌ Lỗi gửi dữ liệu tới chatbot:', err)
-      
+
       // Trong trường hợp lỗi, vẫn hiển thị dữ liệu mẫu để demo
       setWarnings([
-        "Flag all dates",
-        "If governing law is present in the agreement, set it to Commonwealth of Massachusetts",
-        "Check for confidentiality clauses",
-        "Verify payment terms and conditions"
-      ]);
+        'Flag all dates',
+        'If governing law is present in the agreement, set it to Commonwealth of Massachusetts',
+        'Check for confidentiality clauses',
+        'Verify payment terms and conditions'
+      ])
     }
   }
 
@@ -306,17 +330,16 @@ const ContractAssistant: React.FC<Props> = ({ isOpen, onClose }) => {
   }
 
   const handleDocumentClick = (docId: string) => {
-    setActiveDocument(docId);
+    setActiveDocument(docId)
     // Ở đây có thể thêm logic để tải nội dung của tài liệu đã chọn
   }
 
   return (
     <div className='fixed inset-0 z-50 bg-[#fefff9] font-sans flex flex-col h-full'>
-      {/* Header */}
       <div className='p-4 border-b bg-[#fefff9] flex justify-between items-center'>
         <h1 className='text-2xl font-semibold text-gray-800'>Trợ lý hợp đồng</h1>
         <div className='flex items-center gap-4'>
-          <ContractUpload 
+          <ContractUpload
             onFileProcessed={handleFileProcessed}
             onProcessingStart={handleStartProcessing}
             onProgress={handleProgress}
@@ -327,38 +350,36 @@ const ContractAssistant: React.FC<Props> = ({ isOpen, onClose }) => {
         </div>
       </div>
 
-      {/* Scanning progress overlay - shows when loading */}
       {loading && (
         <div className='fixed inset-0 z-50 bg-black/40 flex items-center justify-center'>
           <div className='w-full max-w-md mx-auto px-4'>
             <div className='bg-white rounded-lg shadow-lg p-4'>
               <div className='flex items-center mb-3'>
-                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                <svg
+                  className='animate-spin -ml-1 mr-3 h-5 w-5 text-blue-500'
+                  xmlns='http://www.w3.org/2000/svg'
+                  fill='none'
+                  viewBox='0 0 24 24'
+                >
+                  <circle className='opacity-25' cx='12' cy='12' r='10' stroke='currentColor' strokeWidth='4'></circle>
+                  <path
+                    className='opacity-75'
+                    fill='currentColor'
+                    d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'
+                  ></path>
                 </svg>
                 <span className='text-lg font-medium text-gray-700'>Đang quét tài liệu...</span>
               </div>
-              
-              {/* Progress bar */}
               <div className='relative w-full h-2 bg-gray-200 rounded-full overflow-hidden'>
-                <div 
+                <div
                   className='absolute top-0 left-0 h-full bg-blue-500'
-                  style={{ 
-                    width: `${scanProgress}%`,
-                    transition: 'width 0.2s linear'
-                  }}
+                  style={{ width: `${scanProgress}%`, transition: 'width 0.2s linear' }}
                 ></div>
-                <div 
+                <div
                   className='absolute top-0 h-full w-8 bg-gradient-to-r from-transparent via-blue-300 to-transparent animate-pulse'
-                  style={{ 
-                    left: `${Math.min(92, scanProgress)}%`,
-                    transition: 'left 0.2s linear'
-                  }}
+                  style={{ left: `${Math.min(92, scanProgress)}%`, transition: 'left 0.2s linear' }}
                 ></div>
               </div>
-              
-              {/* Progress percentage */}
               <div className='mt-2 text-right'>
                 <span className='text-sm font-medium text-blue-600'>{Math.round(scanProgress)}%</span>
               </div>
@@ -367,17 +388,15 @@ const ContractAssistant: React.FC<Props> = ({ isOpen, onClose }) => {
         </div>
       )}
 
-      {/* Body */}
       <div className='flex flex-1 overflow-hidden'>
-        {/* Left: Warnings */}
         <div className='w-1/3 border-r p-4 overflow-auto bg-gray-50 shadow-sm'>
           <div className='mb-4 flex items-center justify-between'>
             <h3 className='text-lg font-semibold text-gray-800'>📝 Các mục cần lưu ý</h3>
             <div className='text-sm text-gray-600'>
-              <span className='font-medium'>{warnings.length}</span>/<span className='font-medium'>{warnings.length}</span> mục cần lưu ý
+              <span className='font-medium'>{warnings.length}</span>/
+              <span className='font-medium'>{warnings.length}</span>
             </div>
           </div>
-
           {warnings.length > 0 ? (
             <div className='space-y-1'>
               {warnings.map((item, idx) => (
@@ -391,28 +410,24 @@ const ContractAssistant: React.FC<Props> = ({ isOpen, onClose }) => {
           )}
         </div>
 
-        {/* Right: PDF Viewer & OCR Output */}
         <div className='flex-1 p-4 grid grid-cols-2 gap-4'>
-          {/* PDF Viewer */}
           <div className='flex flex-col bg-white border rounded shadow-sm h-full min-h-32 relative'>
             <h3 className='text-sm font-semibold text-gray-800 p-2 border-b'>Xem trước PDF</h3>
             <div className='flex-1 overflow-auto relative'>
               <PDFViewer file={uploadedFile} />
-              
-              {/* Vertical scanning bar */}
               {showVerticalScan && (
                 <div className='absolute inset-0 pointer-events-none'>
-                  <div 
+                  <div
                     className='absolute top-0 bottom-0 w-1 bg-gradient-to-b from-blue-400 via-blue-500 to-blue-400 shadow-lg'
-                    style={{ 
+                    style={{
                       left: `${verticalScanProgress}%`,
                       boxShadow: '0 0 10px 3px rgba(59, 130, 246, 0.5)',
                       transition: 'left 0.03s linear'
                     }}
                   ></div>
-                  <div 
+                  <div
                     className='absolute inset-0 bg-gradient-to-r from-transparent to-blue-100/20'
-                    style={{ 
+                    style={{
                       clipPath: `polygon(0 0, ${verticalScanProgress}% 0, ${verticalScanProgress}% 100%, 0 100%)`,
                       transition: 'clip-path 0.03s linear'
                     }}
@@ -422,7 +437,6 @@ const ContractAssistant: React.FC<Props> = ({ isOpen, onClose }) => {
             </div>
           </div>
 
-          {/* OCR Output with Navigation Tabs */}
           <div className='flex flex-col bg-white border rounded shadow-sm h-full min-h-32'>
             <div className='flex border-b'>
               {navTabs.map((tab) => (
@@ -440,12 +454,12 @@ const ContractAssistant: React.FC<Props> = ({ isOpen, onClose }) => {
                 </button>
               ))}
             </div>
-            
+
             <div className='flex-1 overflow-hidden'>
               {activeTab === 'content' && (
                 <div className='h-full overflow-auto p-2'>
                   {showExtractedText ? (
-                    <pre 
+                    <pre
                       className='font-sans text-sm whitespace-pre-wrap transition-opacity duration-500'
                       style={{ opacity: textOpacity / 100 }}
                     >
@@ -458,15 +472,14 @@ const ContractAssistant: React.FC<Props> = ({ isOpen, onClose }) => {
                   )}
                 </div>
               )}
-              
               {activeTab === 'documents' && (
                 <div className='h-full overflow-auto'>
                   {uploadedDocuments.length > 0 ? (
                     <div>
                       {uploadedDocuments.map((doc) => (
-                        <DocumentItem 
-                          key={doc.id} 
-                          document={doc} 
+                        <DocumentItem
+                          key={doc.id}
+                          document={doc}
                           isActive={doc.id === activeDocument}
                           onClick={() => handleDocumentClick(doc.id)}
                         />

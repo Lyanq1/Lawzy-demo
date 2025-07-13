@@ -33,6 +33,7 @@
     "react-pdf": "^10.0.1",
     "react-redux": "^9.2.0",
     "reactflow": "^11.11.4",
+    "sonner": "^2.0.6",
     "tailwindcss": "^4.1.10",
     "tesseract.js": "^6.0.1",
     "uuid": "^11.1.0"
