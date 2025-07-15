@@ -29,6 +29,13 @@ interface UploadedDocument {
   size: string
 }
 
+// Interface cho mục ghi chú của bản thân
+interface Note {
+  id: string
+  text: string
+  completed: boolean
+}
+
 const WarningItem: React.FC<WarningItemProps> = ({ warning }) => {
   const [expanded, setExpanded] = useState(false)
 
@@ -142,6 +149,8 @@ const DocumentItem: React.FC<{ document: UploadedDocument; isActive: boolean; on
 const ContractAssistant: React.FC<Props> = ({ isOpen, onClose }) => {
   const dispatch = useDispatch()
 
+  const [notes, setNotes] = useState<Note[]>([])
+  const [newNote, setNewNote] = useState('')
   const [extractedText, setExtractedText] = useState('')
   const [warnings, setWarnings] = useState<string[]>([])
   const [uploadedFile, setUploadedFile] = useState<File | null>(null)
@@ -160,6 +169,24 @@ const ContractAssistant: React.FC<Props> = ({ isOpen, onClose }) => {
   const [uploadedDocuments, setUploadedDocuments] = useState<UploadedDocument[]>([])
   const [activeDocument, setActiveDocument] = useState<string | null>(null)
 
+  // State cho mục Note
+  const handleSend = () => {
+    if (newNote.trim()) {
+      setNotes([{ id: Date.now().toString(), text: newNote.trim(), completed: false }, ...notes])
+      setNewNote('')
+    }
+  }
+
+  useEffect(() => {
+    const stored = localStorage.getItem('contract_notes')
+    if (stored) {
+      setNotes(JSON.parse(stored))
+    }
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem('contract_notes', JSON.stringify(notes))
+  }, [notes])
   // Tabs điều hướng
   const navTabs: NavTab[] = [
     {
@@ -189,6 +216,11 @@ const ContractAssistant: React.FC<Props> = ({ isOpen, onClose }) => {
           />
         </svg>
       )
+    },
+    {
+      id: 'note',
+      label: 'Ghi chú',
+      icon: <img className=' pt-0.5 h-5 w-5' src='assets/notes.svg' alt='note icon' />
     }
   ]
 
@@ -258,50 +290,45 @@ const ContractAssistant: React.FC<Props> = ({ isOpen, onClose }) => {
     console.log('📝 OCR Text:', text)
 
     try {
-      const res = await fetch('https://platform.phoai.vn/webhook/chatbotContract', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: text,
-          sessionId: 'contract-analysis'
-        })
-      })
-
-      if (!res.ok) throw new Error(`HTTP ${res.status}`)
-
-      const data = await res.json()
-      console.log('📌 Phản hồi từ chatbot:', data)
-
-      // Xử lý 2 trường hợp: phản hồi trực tiếp hoặc được gói trong chuỗi JSON
-      let parsed = data
-      if (typeof data.output === 'string') {
-        try {
-          parsed = JSON.parse(data.output)
-        } catch (err) {
-          console.error('❌ Không thể parse output:', err)
-        }
-      }
-
-      if (parsed?.suggestions && Array.isArray(parsed.suggestions)) {
-        setWarnings(parsed.suggestions)
-      } else {
-        console.warn('⚠️ Phản hồi không có "suggestions" hợp lệ:', parsed)
-      }
-      if (parsed?.suggestions && Array.isArray(parsed.suggestions)) {
-        setWarnings(parsed.suggestions)
-      } else {
-        console.warn('⚠️ Phản hồi không có "suggestions" hợp lệ:', parsed)
-        // Nếu không có dữ liệu hợp lệ từ API, sử dụng dữ liệu mẫu để demo
-        setWarnings([
-          'Flag all dates',
-          'If governing law is present in the agreement, set it to Commonwealth of Massachusetts',
-          'Check for confidentiality clauses',
-          'Verify payment terms and conditions'
-        ])
-      }
-      console.log(scanProgress)
-
-      console.log(scanProgress)
+      // const res = await fetch('https://platform.phoai.vn/webhook/chatbotContract', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({
+      //     message: text,
+      //     sessionId: 'contract-analysis'
+      //   })
+      // })
+      // if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      // const data = await res.json()
+      // console.log('📌 Phản hồi từ chatbot:', data)
+      // // Xử lý 2 trường hợp: phản hồi trực tiếp hoặc được gói trong chuỗi JSON
+      // let parsed = data
+      // if (typeof data.output === 'string') {
+      //   try {
+      //     parsed = JSON.parse(data.output)
+      //   } catch (err) {
+      //     console.error('❌ Không thể parse output:', err)
+      //   }
+      // }
+      // if (parsed?.suggestions && Array.isArray(parsed.suggestions)) {
+      //   setWarnings(parsed.suggestions)
+      // } else {
+      //   console.warn('⚠️ Phản hồi không có "suggestions" hợp lệ:', parsed)
+      // }
+      // if (parsed?.suggestions && Array.isArray(parsed.suggestions)) {
+      //   setWarnings(parsed.suggestions)
+      // } else {
+      //   console.warn('⚠️ Phản hồi không có "suggestions" hợp lệ:', parsed)
+      //   // Nếu không có dữ liệu hợp lệ từ API, sử dụng dữ liệu mẫu để demo
+      //   setWarnings([
+      //     'Flag all dates',
+      //     'If governing law is present in the agreement, set it to Commonwealth of Massachusetts',
+      //     'Check for confidentiality clauses',
+      //     'Verify payment terms and conditions'
+      //   ])
+      // }
+      // console.log(scanProgress)
+      // console.log(scanProgress)
     } catch (err) {
       console.error('❌ Lỗi gửi dữ liệu tới chatbot:', err)
 
@@ -490,6 +517,78 @@ const ContractAssistant: React.FC<Props> = ({ isOpen, onClose }) => {
                       <p className='text-gray-400 text-sm'>Chưa có tài liệu nào được tải lên.</p>
                     </div>
                   )}
+                </div>
+              )}
+              {activeTab === 'note' && (
+                <div className='h-full overflow-auto p-4 flex flex-col'>
+                  <div className='mb-4'>
+                    <div className='flex gap-2'>
+                      <input
+                        type='text'
+                        value={newNote}
+                        onChange={(e) => setNewNote(e.target.value)}
+                        placeholder='Nhập nội dung ghi chú...'
+                        className='flex-1 px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500'
+                        onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+                      />
+                      <button
+                        onClick={handleSend}
+                        className='px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium transition'
+                      >
+                        Thêm
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className='space-y-3'>
+                    {notes.length === 0 ? (
+                      <div className='text-sm text-gray-500 text-center mt-10'>
+                        Chưa có ghi chú nào. Bắt đầu thêm một ghi chú mới.
+                      </div>
+                    ) : (
+                      notes.map((note) => (
+                        <div
+                          key={note.id}
+                          className={`flex items-start justify-between p-4 rounded-xl border transition ${
+                            note.completed ? 'bg-green-50 border-green-200' : 'bg-white border-gray-200 hover:shadow-sm'
+                          }`}
+                        >
+                          <div className='flex items-start gap-3 flex-1'>
+                            <input
+                              type='checkbox'
+                              checked={note.completed}
+                              onChange={() =>
+                                setNotes(notes.map((t) => (t.id === note.id ? { ...t, completed: !t.completed } : t)))
+                              }
+                              className='mt-1 h-4 w-4 text-green-600 border-gray-300 rounded focus:ring-green-500'
+                            />
+                            <span
+                              className={`text-sm leading-relaxed ${
+                                note.completed ? 'line-through text-gray-400' : 'text-gray-800'
+                              }`}
+                            >
+                              {note.text}
+                            </span>
+                          </div>
+                          <button
+                            onClick={() => setNotes(notes.filter((t) => t.id !== note.id))}
+                            className='p-1 hover:bg-gray-100 rounded transition'
+                            title='Xoá ghi chú'
+                          >
+                            <svg
+                              className='w-4 h-4 text-gray-400 hover:text-red-500 transition'
+                              fill='none'
+                              stroke='currentColor'
+                              strokeWidth={2}
+                              viewBox='0 0 24 24'
+                            >
+                              <path strokeLinecap='round' strokeLinejoin='round' d='M6 18L18 6M6 6l12 12' />
+                            </svg>
+                          </button>
+                        </div>
+                      ))
+                    )}
+                  </div>
                 </div>
               )}
             </div>
