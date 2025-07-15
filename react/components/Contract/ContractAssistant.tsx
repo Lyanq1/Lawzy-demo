@@ -220,7 +220,17 @@ const ContractAssistant: React.FC<Props> = ({ isOpen, onClose }) => {
     {
       id: 'note',
       label: 'Ghi chú',
-      icon: <img className=' pt-0.5 h-5 w-5' src='assets/notes.svg' alt='note icon' />
+      // icon: <img className=' pt-0.5 h-5 w-5' src='assets/notes.svg' alt='note icon' />
+      icon: (
+        <svg className='h-5 w-5' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+          <path
+            d='M4 6H20M4 6V18C4 19.1046 4.89543 20 6 20H18C19.1046 20 20 19.1046 20 18V6M4 6H14M14 6V4C14 2.89543 14.8954 2 16 2H18C19.1046 2 20 2.89543 20 4V6M10 12H16M10 16H16'
+            strokeWidth={2}
+            stroke-linecap='round'
+            stroke-linejoin='round'
+          />
+        </svg>
+      )
     }
   ]
 
