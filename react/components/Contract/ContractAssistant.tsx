@@ -300,44 +300,44 @@ const ContractAssistant: React.FC<Props> = ({ isOpen, onClose }) => {
     console.log('📝 OCR Text:', text)
 
     try {
-      // const res = await fetch('https://platform.phoai.vn/webhook/chatbotContract', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({
-      //     message: text,
-      //     sessionId: 'contract-analysis'
-      //   })
-      // })
-      // if (!res.ok) throw new Error(`HTTP ${res.status}`)
-      // const data = await res.json()
-      // console.log('📌 Phản hồi từ chatbot:', data)
-      // // Xử lý 2 trường hợp: phản hồi trực tiếp hoặc được gói trong chuỗi JSON
-      // let parsed = data
-      // if (typeof data.output === 'string') {
-      //   try {
-      //     parsed = JSON.parse(data.output)
-      //   } catch (err) {
-      //     console.error('❌ Không thể parse output:', err)
-      //   }
-      // }
-      // if (parsed?.suggestions && Array.isArray(parsed.suggestions)) {
-      //   setWarnings(parsed.suggestions)
-      // } else {
-      //   console.warn('⚠️ Phản hồi không có "suggestions" hợp lệ:', parsed)
-      // }
-      // if (parsed?.suggestions && Array.isArray(parsed.suggestions)) {
-      //   setWarnings(parsed.suggestions)
-      // } else {
-      //   console.warn('⚠️ Phản hồi không có "suggestions" hợp lệ:', parsed)
-      //   // Nếu không có dữ liệu hợp lệ từ API, sử dụng dữ liệu mẫu để demo
-      //   setWarnings([
-      //     'Flag all dates',
-      //     'If governing law is present in the agreement, set it to Commonwealth of Massachusetts',
-      //     'Check for confidentiality clauses',
-      //     'Verify payment terms and conditions'
-      //   ])
-      // }
-      // console.log(scanProgress)
+      const res = await fetch('https://platform.phoai.vn/webhook/chatbotContract', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: text,
+          sessionId: 'contract-analysis'
+        })
+      })
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      const data = await res.json()
+      console.log('📌 Phản hồi từ chatbot:', data)
+      // Xử lý 2 trường hợp: phản hồi trực tiếp hoặc được gói trong chuỗi JSON
+      let parsed = data
+      if (typeof data.output === 'string') {
+        try {
+          parsed = JSON.parse(data.output)
+        } catch (err) {
+          console.error('❌ Không thể parse output:', err)
+        }
+      }
+      if (parsed?.suggestions && Array.isArray(parsed.suggestions)) {
+        setWarnings(parsed.suggestions)
+      } else {
+        console.warn('⚠️ Phản hồi không có "suggestions" hợp lệ:', parsed)
+      }
+      if (parsed?.suggestions && Array.isArray(parsed.suggestions)) {
+        setWarnings(parsed.suggestions)
+      } else {
+        console.warn('⚠️ Phản hồi không có "suggestions" hợp lệ:', parsed)
+        // Nếu không có dữ liệu hợp lệ từ API, sử dụng dữ liệu mẫu để demo
+        setWarnings([
+          'Flag all dates',
+          'If governing law is present in the agreement, set it to Commonwealth of Massachusetts',
+          'Check for confidentiality clauses',
+          'Verify payment terms and conditions'
+        ])
+      }
+      console.log(scanProgress)
       // console.log(scanProgress)
     } catch (err) {
       console.error('❌ Lỗi gửi dữ liệu tới chatbot:', err)
