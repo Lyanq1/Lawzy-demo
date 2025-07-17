@@ -3,7 +3,7 @@ import ContractUpload from './ContractUpload'
 import PDFViewer from './PDFViewer'
 import { useDispatch } from 'react-redux'
 import { setExtractedTextRedux } from '../../store/slices/extractedSlice'
-
+import RichTextEditor from './RichTextEditor'
 interface Props {
   isOpen: boolean
   onClose: () => void
@@ -531,7 +531,7 @@ const ContractAssistant: React.FC<Props> = ({ isOpen, onClose }) => {
               )}
               {activeTab === 'note' && (
                 <div className='h-full overflow-auto p-4 flex flex-col'>
-                  <div className='mb-4'>
+                  {/* <div className='mb-4'>
                     <div className='flex gap-2'>
                       <input
                         type='text'
@@ -598,7 +598,8 @@ const ContractAssistant: React.FC<Props> = ({ isOpen, onClose }) => {
                         </div>
                       ))
                     )}
-                  </div>
+                  </div> */}
+                  <RichTextEditor />
                 </div>
               )}
             </div>
